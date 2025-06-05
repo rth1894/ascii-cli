@@ -10,7 +10,6 @@ Rust cli to convert images to ASCII art.
 - Print version information (`--version`, `-V`)  
 - Parse the path of the input file to be converted  
 - Implemented `lib.rs` to handle ASCII conversion
-- Set a minimum width for ASCII art
 - Error handling
 
 ---
@@ -27,3 +26,4 @@ Rust cli to convert images to ASCII art.
 ## Usage
 ```bash
 cargo run -- [OPTIONS] [FILE]
+cargo run -- --help
