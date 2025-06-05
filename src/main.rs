@@ -1,15 +1,20 @@
-mod args;
-use std::{env, process};
-use args::{Config, check};
+use ascii_cli::{check, get_info};
+
+use std::env;
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
+    let args: Vec<String> = env::args().skip(1).collect();
 
-    let config: Config = check(&args).unwrap_or_else(|err| {
-        eprintln!("Problem passing arguments: {}", err);
-        process::exit(1);
-    });
+    let config = match check(&args) {
+        Ok(c) => c,
+        Err(e) => {
+            eprintln!("Error: {}", e);
+            std::process::exit(1);
+        }
+    };
 
-    println!("File: {}", config.file);
-    println!("Terminal: {}", config.terminal);
+    if let Err(e) = get_info(config) {
+        eprintln!("Application error: {}", e);
+        std::process::exit(1);
+    }
 }

@@ -1,58 +1,75 @@
-use std::process;
-
-const VERSION: &str = "1.0.0";
-
 pub struct Config {
-    pub file: String,
+    pub input_file: String,
+    pub output_file: Option<String>,
     pub terminal: bool,
 }
 
 pub fn check(args: &[String]) -> Result<Config, &'static str> {
-    if args.len() < 2 {
-        return Err("In sufficient parameters!");
+    const VERSION: &str = "0.0.1";
+
+    if args.is_empty() {
+        return Err("No arguments provided. Use --help for usage.");
     }
 
-    let command: String = args[1].clone();
-    let mut terminal: bool = true;
-    let mut file = String::new();
+    let mut terminal = false;
+    let mut input_file = None;
+    let mut output_file = None;
 
-    if command == "--help" || command == "-h" || command == "-?"  {
-        println!(
-            "
-            \rUsage: cargo run -- [OPTIONS] [FILE]
+    for command in args {
+        if command == "--help" || command == "-h" || command == "-?" {
+            println!(
+                "
+Usage: cargo run -- [OPTIONS] [FILE]
 
-            \rArguments:
-            \r\t[FILE]
-            \r\t\tImage file to convert to ascii
+Arguments:
+    [FILE]
+        Image file to convert to ASCII
 
-            \r\t[OPTIONS]
-            \r\t\t-h, --help\t\tPrint this help menu
-            \r\t\t-t, --terminal\t\tPrint ASCII in terminal
-            \r\t\t-f=PATH, --path=PATH\tPrint ASCII in specified PATH
-            \r\t\t-V, --version\t\tPrint version
+    [OPTIONS]
+        -h, --help             Print this help menu
+        -t, --terminal         Print ASCII in terminal
+        -f=FILE, --file=FILE   Output ASCII art to specified text file
+        -p=PATH, --path=PATH   Image path
+        -V, --version          Print version
 
-            \rExamples:
-            \r\tcargo run --path=\"images/ascii-text.txt\" image.png
-            \r\tcargo run --t image.png
+Examples:
+    cargo run --file=ascii.txt --path=image.png
+    cargo run -t --path=image.png
 
-            \rSee github.com/rth1894/ascii-cli for details");
-        process::exit(0);
-    }
-
-    else if command.starts_with("-f=")|| command.starts_with("--path=") {
-        let parts: Vec<&str> = command.split("=").collect();
-        if parts.len() == 2 {
-            file = parts[1].to_string();
-            terminal = false;
+See github.com/rth1894/ascii-cli for details."
+            );
+            std::process::exit(0);
+        } else if command == "-t" || command == "--terminal" {
+            terminal = true;
+        } else if command.starts_with("-f=") || command.starts_with("--file=") {
+            let parts: Vec<&str> = command.split('=').collect();
+            if parts.len() == 2 && !parts[1].is_empty() {
+                output_file = Some(parts[1].to_string());
+            } else {
+                return Err("Output file path is missing after -f or --file.");
+            }
+        } else if command.starts_with("-p=") || command.starts_with("--path=") {
+            let parts: Vec<&str> = command.split('=').collect();
+            if parts.len() == 2 && !parts[1].is_empty() {
+                input_file = Some(parts[1].to_string());
+            } else {
+                return Err("Input file path is missing after -p or --path.");
+            }
+        } else if command == "-V" || command == "--version" {
+            println!("ascii-cli version {}", VERSION);
+            std::process::exit(0);
+        } else {
+            return Err("Unknown argument provided. Use --help for usage.");
         }
-        else {
-            return Err("No path specified!");
-        }
     }
 
-    else if command == "-V" || command == "--version" {
-        println!("ascii-cli {}", VERSION);
+    if input_file.is_none() {
+        return Err("Input file path not specified. Use -p=PATH or --path=PATH.");
     }
 
-    Ok(Config { file, terminal }) 
+    Ok(Config {
+        input_file: input_file.unwrap(),
+        output_file,
+        terminal,
+    })
 }
