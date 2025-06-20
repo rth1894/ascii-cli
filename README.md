@@ -7,21 +7,18 @@
 
 ## Features
 
-<<<<<<< HEAD
 - Print help menu (`--help`, `-h`, `-?`)  
 - Print version information (`--version`, `-V`)  
 - Parse the path of the input file to be converted  
 - Implemented `lib.rs` to handle ASCII conversion
 - Error handling
-=======
 - Clean interface with help/version flags.
 - Converts images into text-based ASCII representation.
 - Export to a file (`--file`) or display directly in the terminal.
 - Ensures readable output regardless of input image size.
 - Handles failures for invalid paths, unsupported formats, and missing args.
->>>>>>> bfd8024 (minor changes)
 
-- `lib.rs` - handles image to ascii conversion
+- `lib.rs`  - handles image to ascii conversion
 - `main.rs` - handles errors
 - `args.rs` - handles arguments and errors
 
@@ -31,10 +28,8 @@
 
 ### Run with Cargo (development mode)
 ```bash
-<<<<<<< HEAD
 cargo run -- [OPTIONS] [FILE]
 cargo run -- --help
-=======
 cargo run -- --file=ascii.txt --path=image.png
 cargo run -t --path=image.png
 ```
@@ -59,4 +54,3 @@ This compiles and installs the binaries locally.
 - Windows:     `%USERPROFILE%\.cargo\bin\ascii-cli.exe`
 
 Add the directory to your system's `PATH` so you can use `ascii-cli` globally.
->>>>>>> bfd8024 (minor changes)
