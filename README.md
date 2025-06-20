@@ -49,6 +49,11 @@ cargo install --path .
 ```
 This compiles and installs the binaries locally.
 
+Add `export PATH="$HOME/.cargo/bin:$PATH"` to your `.bashrc` or `.zshrc`, run:
+```bash
+source ~/.bashrc # or .zshrc
+```
+
 ### Cargo Binary Path
 - Linux/MacOS: `~/.cargo/bin/ascii-cli`
 - Windows:     `%USERPROFILE%\.cargo\bin\ascii-cli.exe`
