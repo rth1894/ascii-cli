@@ -56,7 +56,7 @@ See github.com/rth1894/ascii-cli for details."
                 return Err("Input file path is missing after -p or --path.");
             }
         } else if command == "-V" || command == "--version" {
-            println!("ascii-cli version {}", VERSION);
+            println!("ascii-cli {}", VERSION);
             std::process::exit(0);
         } else {
             return Err("Unknown argument provided. Use --help for usage.");
